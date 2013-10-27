@@ -49,7 +49,9 @@ static MapCacheManager *map_cacher_instance = nil;
 - (void)updateWithReachability:(Reachability *)reachability {
     NetworkStatus netStatus = [reachability currentReachabilityStatus];
     switch (netStatus){
-        case NotReachable:break;
+        case NotReachable:
+            [mapCache cancelBackgroundCache];
+            break;
 //        case ReachableViaWiFi:break;
 //        case ReachableViaWWAN:break;
         default:{
@@ -59,7 +61,7 @@ static MapCacheManager *map_cacher_instance = nil;
             theSouthWest.longitude = -77.09312438964844;
             theNorthEast.latitude = 39.07730899446638;
             theNorthEast.longitude = -76.47651672363281;
-            [mapCache beginBackgroundCacheForTileSource:onlineSource southWest:theSouthWest northEast:theNorthEast minZoom:11 maxZoom:10];
+            [mapCache beginBackgroundCacheForTileSource:onlineSource southWest:theSouthWest northEast:theNorthEast minZoom:12 maxZoom:16];
             NSLog(@"caching = %d", mapCache.isBackgroundCaching);
             break;
         }
@@ -84,6 +86,10 @@ static MapCacheManager *map_cacher_instance = nil;
 
 - (void)tileCacheDidFinishBackgroundCache:(RMTileCache *)tileCache {
     NSLog(@"caching finished");
+}
+
+- (void)tileCache:(RMTileCache *)tileCache didBackgroundCacheTile:(RMTile)tile withIndex:(int)tileIndex ofTotalTileCount:(int)totalTileCount {
+    NSLog(@"tile recieved with index= %i for conut = %i", tileIndex, totalTileCount);
 }
 
 - (void)dealloc {

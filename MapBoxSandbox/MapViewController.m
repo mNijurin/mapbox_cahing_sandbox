@@ -27,7 +27,7 @@
     NSString *jSONTileStr = [NSString stringWithContentsOfFile:strFileURL encoding:NSUTF8StringEncoding error:&error];
     onlineSource = [[RMMapBoxSource alloc] initWithTileJSON:jSONTileStr];
     mapView.tileSource = onlineSource;
-    mapView.zoom = 11;
+    mapView.zoom = 14;
 }
 
 - (void)dealloc {
